@@ -5,6 +5,7 @@ const app = express();
 app.use(express.json());
 app.use('/api/score', scoreRoutes);
 
-app.listen(3001, () => {
-    console.log('Server listening on port 3001');
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
 });
