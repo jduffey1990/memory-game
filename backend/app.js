@@ -13,7 +13,7 @@ const cors = require('cors');
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:3000'  // Only allow requests from this origin
+    origin: ['https://jordans-memory-game.onrender.com', 'http://localhost:3000']  // Only allow requests from this origin
   }));
 
 app.use('/scores', scoreRoutes);
