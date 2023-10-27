@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  background-color: #E0F4F2;
+  margin-top: 70px; /* This is an approximation, adjust based on the actual height of the h1 */
+  min-height: calc(100vh - 80px);
+}
+
+h1 {
+  margin: 0 0 40px;
+  font-family: 'Pacifico', cursive; 
+  font-size: 2.5em;           /* Increase the font size a bit */
+  color: #FF8A8A;             /* A soft coral from our previous color suggestions */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a soft shadow for depth */
+  border-bottom: 3px solid #FF6B6B;  /* A bottom border for emphasis */
+  padding-bottom: 10px;      /* Some padding to space out the border */
+  animation: bounce 1s ease; /* Optional: Add a bounce animation */
+  position: fixed;  /* make the heading sticky */
+  top: 0;           /* always at the top */
+  left: 0;
+  right: 0;
+  z-index: 30;      /* keep it above everything */
+  text-align: center; /* center the text */
+  background-color: #E0F4F2; /* same background color as .App */
+  padding:  0;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+label {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+select {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  background-color: #f7f7f7;
+  font-size: 18px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+  background-color: #C1E3DC
+}
+
+select:hover {
+  background-color: #B2D8D1;
+}
+
+.styled-input {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7;
+  font-size: 18px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+  background-color: #C1E3DC;
+}
+
+.styled-input:hover {
+  background-color: #B2D8D1;
+}
+
+button {
+  background-image: linear-gradient(to right, #1F7A5B, #288C67);  /* Teal-green gradients */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  font-size: 18px;
+  padding: 10px 20px;
+  transition: background-image 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-image: linear-gradient(to right, #288C67, #1F7A5B);
+  transform: translateY(-2px);
+}
+
+button.secondary {
+  background-image: linear-gradient(to right, #FF6B6B, #FF8A8A);  /* Muted coral gradients */
+}
+
+button.secondary:hover {
+  background-image: linear-gradient(to right, #FF8A8A, #FF6B6B);
+}
+
+.game-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.board {
+  min-height: 100vh;
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover;
+  background-repeat: repeat;
+  height: 80vh;
+  padding: 2%; /* Add some padding to ensure the cards don't touch the board edges */
+}
+
+.high-score-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  background-color: #eee;
+  border: 1px solid #333;
+}
+
+.game-choice-overlay {
+  display: flex;
+  flex-direction: column;  /* Changed to column for better layout */
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  width: 60%;  /* Reduced to 60% to focus on game choice elements */
+  height: 60vh; /* Adjusted height */
+  border: 1px solid #9FBFAD;
+  border-radius: 15px;  /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);  /* Subtle shadow for depth */
+  z-index: 5;
+}
+
+
+
+#timer, #player1Score, #player2Score {
+  margin-top: 20px;
+}
+
+/*This section is creating the look of the cards*/
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(6, 150px); /* max of five cards in a row */
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card {
+  /* Setting fixed width and height for the card */
+  width: 100px; /* Adjust this as per your preference */
+  height: 140px; /* Adjust this as per your preference, keeping in mind the card shape */
+  margin: 0.5rem; 
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.03); /* Slightly enlarges the card on hover */
+}
+
+.card img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the card without distortion */
+  border-radius: 10px;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* removed position, width, and z-index properties */
+  font-size: 24px;
+  color: white;
+  margin-top: 10px;  /* Add some top margin to space it from the fixed header */
+}
+
+.player-turn {
+  margin-bottom: 20px; /* Spacing out the elements */
+  font-size: 40px;
+  color: #FF8A8A;
+}
+
+.game-result-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Translucent black background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50; /* Make sure it's on top of everything else */
+  font-size: 32px; /* Increase size for better visibility */
+  color: white; /* White text against the translucent black background */
+}
+
+.result-text {
+  margin-bottom: 20px; /* Spacing out the text and the button */
+}
+
+/* ScoreBoard.css */
+.scoreboard {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1em;
+  background-color: #f9f9f9;
+}
+
+.score-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.score-item {
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* App.css */
+.game-result-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);  /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  box-sizing: border-box;
+}
