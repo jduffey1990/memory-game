@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import Cards from './cardTable/cards';
-import { DECKS } from './cardTable/decks';
+import React from 'react';
 
 function MultiPlayerGame({ player1Score, player2Score }) {
     return (

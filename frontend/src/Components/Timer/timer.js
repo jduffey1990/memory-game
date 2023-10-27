@@ -17,11 +17,9 @@ function Timer({ onStart, onStop, isRunning, matchedPairs }) {
 
     useEffect(() => {
         if (matchedPairs === 9) {
-            console.log("Timer Component - Matched Pairs:", matchedPairs);
-            console.log("Timer Component - Seconds:", seconds);
             onStop(seconds);  // Sending the elapsed time to the parent
         }
-    }, [matchedPairs, onStop]);
+    }, [matchedPairs, onStop, seconds]);
 
     return <div id="timer">Timer: {seconds}</div>;
 }

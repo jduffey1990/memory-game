@@ -97,13 +97,10 @@ const handleScoreSubmit = async (e) => {
   } catch (error) {
     // Handle error: show a user-friendly error message
     console.error("An error occurred:", error);
-    // You can also update the UI with a user-friendly error message here, if needed
   }
 };
 
 const handleRestart = () => {
-  // Depending on your restart logic:
-  // For instance, if you simply want to reload the page for now:
   window.location.reload();
 };
 
@@ -140,12 +137,11 @@ const handleRestart = () => {
                 {gameType === 'single' && (
                 <Timer
                   isRunning={isTimerRunning}
-                  matchedPairs={matchedPairs.length / 2}  // Assuming you'll pass this prop from the Cards component
+                  matchedPairs={matchedPairs.length / 2}  
                   onStart={() => setIsTimerRunning(true)}
                   onStop={(time) => {
                       setIsTimerRunning(false);
                       setFinalTime(time);
-                      // TODO: Send the time to your backend for high score tracking
                   
                     }}
                     />
@@ -160,7 +156,7 @@ const handleRestart = () => {
                 onCardMatch={handleCardMatch}
             />
 
-            /*multi-player game over restart?*/
+            
             {gameOver && gameType === 'multi' && (
                 <div className="game-result-overlay">
                     <div className="result-text">
@@ -171,7 +167,7 @@ const handleRestart = () => {
                 </div>
             )}
 
-            //single player game over score submit
+            
             {gameOver && gameType === 'single' && !showScores && (
                 <div className="game-result-overlay">
                     <div className="result-text">Your Time: {finalTime} seconds</div>
