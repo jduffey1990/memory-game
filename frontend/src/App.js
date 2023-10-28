@@ -29,6 +29,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //once we have retrieved the top scores from the DB
   const [topScores, setTopScores] = useState([]);
@@ -74,6 +75,8 @@ function App() {
 const handleScoreSubmit = async (e) => {
   e.preventDefault();
 
+  setIsSubmitting(true);
+
   try {
     // Create a score object from your state values
     const scoreData = {
@@ -89,14 +92,17 @@ const handleScoreSubmit = async (e) => {
       const scores = await listScores();
       setTopScores(scores);
       setShowScores(true);  // Show the scores view
+      setIsSubmitting(false);
     } else {
       // Handle failure: show a user-friendly error message
       console.error("Failed to submit score.");
+      setIsSubmitting(false);
     }
 
   } catch (error) {
     // Handle error: show a user-friendly error message
     console.error("An error occurred:", error);
+    setIsSubmitting(false);
   }
 };
 
@@ -188,7 +194,9 @@ const handleRestart = () => {
                             onChange={(e) => setLastName(e.target.value)} 
                             required 
                         />
-                        <button type="submit">Submit Score</button>
+                        <button type="submit" disabled={isSubmitting}>
+                          {isSubmitting ? 'Submitting...' : 'Submit Score'}
+                        </button>
                     </form>
                 </div>
             )}
