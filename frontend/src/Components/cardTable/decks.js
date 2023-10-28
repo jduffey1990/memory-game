@@ -33,9 +33,21 @@ import moana from "../../images/moana.png";
 import snowWhite from "../../images/snowWhite.png";
 import tiana from "../../images/tiana.png";
 
+//pokemon
+import pikachu from "../../images/pikachu.png";
+import charmander from "../../images/charmander.png";
+import charizard from "../../images/charizard.png";
+import eviee from "../../images/eviee.png";
+import squirtle from "../../images/squirtle.png";
+import bulbasaur from "../../images/bulbasaur.png";
+import jigglypuff from "../../images/jigglypuff.png";
+import snorlax from "../../images/snorlax.png";
+import pidgeot from "../../images/pidgeot.png";
+
 export const DECKS = {
   "Black and White": [baseball, baseball, football, football, bike, bike, cat, cat, chicken, chicken, dog, dog, mountains, mountains, skis, skis, ballerina, ballerina],
   "Superheroes": [batman, batman, captMarvel, captMarvel, catWoman, catWoman, hulk, hulk, panther, panther, spiderman, spiderman, superman, superman, wonder, wonder, storm, storm],
-  "Disney Princesses": [ariel, ariel, belle, belle, cinderella, cinderella, elsa, elsa, merida, merida, mulan, mulan, moana, moana, snowWhite, snowWhite, tiana, tiana]
+  "Disney Princesses": [ariel, ariel, belle, belle, cinderella, cinderella, elsa, elsa, merida, merida, mulan, mulan, moana, moana, snowWhite, snowWhite, tiana, tiana],
   // ... any other decks you add
+  "Disney Princesses": [pikachu, pikachu, eviee, eviee, charizard, charizard, charmander, charmander, squirtle, squirtle, bulbasaur, bulbasaur, jigglypuff, jigglypuff, snorlax, snorlax, pidgeot, pidgeot]
 };
