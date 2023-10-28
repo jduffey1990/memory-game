@@ -195,7 +195,7 @@ const handleRestart = () => {
 
             {showScores && (
                         <div className="game-result-overlay">
-                            <h2>Top Scores!</h2>
+                            <h1>Top Scores!</h1>
                             <ScoreBoard scores={topScores} />
                             <button className ='button secondary' onClick={handleRestart}>Restart</button>
                         </div>

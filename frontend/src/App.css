@@ -220,7 +220,7 @@ button.secondary:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Translucent black background */
+  background-color: rgba(0, 0, 0, 0.9); /* Translucent black background */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -228,6 +228,7 @@ button.secondary:hover {
   z-index: 50; /* Make sure it's on top of everything else */
   font-size: 32px; /* Increase size for better visibility */
   color: white; /* White text against the translucent black background */
+  margin-top: 80px;
 }
 
 .result-text {
@@ -235,11 +236,9 @@ button.secondary:hover {
 }
 
 /* ScoreBoard.css */
+
 .scoreboard {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 1em;
-  background-color: #f9f9f9;
+  margin-top: 200px;
 }
 
 .score-list {
@@ -248,25 +247,6 @@ button.secondary:hover {
 }
 
 .score-item {
-  margin: 0.5em 0;
-  padding: 0.5em;
-  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-}
-
-/* App.css */
-.game-result-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);  /* Semi-transparent background */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2em;
-  box-sizing: border-box;
-}
+} 
