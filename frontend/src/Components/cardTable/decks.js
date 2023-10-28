@@ -49,5 +49,5 @@ export const DECKS = {
   "Superheroes": [batman, batman, captMarvel, captMarvel, catWoman, catWoman, hulk, hulk, panther, panther, spiderman, spiderman, superman, superman, wonder, wonder, storm, storm],
   "Disney Princesses": [ariel, ariel, belle, belle, cinderella, cinderella, elsa, elsa, merida, merida, mulan, mulan, moana, moana, snowWhite, snowWhite, tiana, tiana],
   // ... any other decks you add
-  "Disney Princesses": [pikachu, pikachu, eviee, eviee, charizard, charizard, charmander, charmander, squirtle, squirtle, bulbasaur, bulbasaur, jigglypuff, jigglypuff, snorlax, snorlax, pidgeot, pidgeot]
+  "Pokemon": [pikachu, pikachu, eviee, eviee, charizard, charizard, charmander, charmander, squirtle, squirtle, bulbasaur, bulbasaur, jigglypuff, jigglypuff, snorlax, snorlax, pidgeot, pidgeot]
 };
