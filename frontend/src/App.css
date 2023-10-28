@@ -215,20 +215,20 @@ button.secondary:hover {
 }
 
 .game-result-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.9); /* Translucent black background */
+  align-items: center;
+  background-color: rgba(0,0,0,.9);
+  color: #fff;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-size: 32px;
   justify-content: center;
-  z-index: 50; /* Make sure it's on top of everything else */
-  font-size: 32px; /* Increase size for better visibility */
-  color: white; /* White text against the translucent black background */
-  margin-top: 80px;
+  position: fixed; /* Changed from absolute to fixed */
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; /* This ensures it reaches the bottom */
+  z-index: 50;
+  padding-top: 80px; /* Added this to move content down instead of using margin-top */
 }
 
 .result-text {
