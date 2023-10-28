@@ -10,6 +10,7 @@ import ScoreBoard from './Components/topScore';
 
 import { createScore } from './api'
 import { listScores } from './api';
+import { pingBackend } from './api';
 
 function App() {
   
@@ -61,6 +62,16 @@ function App() {
       }
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await pingBackend();
+      } catch (error) {
+        console.error('Failed to ping backend:', error);
+      }
+    })();
+  }, []);
 
   //endgame effect
   useEffect(() => {

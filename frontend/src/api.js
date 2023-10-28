@@ -70,3 +70,8 @@ export async function createScore(score, signal) {  // <-- renamed parameter
   };
   return await fetchJson(url, options, score);
 }
+
+export async function pingBackend(signal) {
+  const url = new URL(`${API_BASE_URL}/scores/ping`);
+  return await fetchJson(url, { headers, signal }, []);
+}
