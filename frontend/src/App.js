@@ -7,6 +7,7 @@ import { DECKS } from './Components/cardTable/decks';
 import Timer from './Components/Timer/timer';
 import MultiPlayerGame from './Components/MultiPlayerGame';
 import ScoreBoard from './Components/topScore';
+import SafeInput, {containsBlacklistedWord} from './Components/safeInput';
 
 import { createScore } from './api'
 import { listScores } from './api';
@@ -30,11 +31,15 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isFirstNameInappropriate, setIsFirstNameInappropriate] = useState(false);
+const [isLastNameInappropriate, setIsLastNameInappropriate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   //once we have retrieved the top scores from the DB
   const [topScores, setTopScores] = useState([]);
   const [showScores, setShowScores] = useState(false)
+
+  
 
   const handleGameTypeSelection = (type, deck) => {
     setGameType(type);
@@ -82,6 +87,14 @@ function App() {
         setGameOver(true);
     }
 }, [matchedPairs]);
+
+  const handleFirstNameChange = (newVal) => {
+    setFirstName(newVal);
+  };
+
+  const handleLastNameChange = (newVal) => {
+    setLastName(newVal);
+  };
 
 const handleScoreSubmit = async (e) => {
   e.preventDefault();
@@ -163,7 +176,14 @@ const handleRestart = () => {
                     }}
                     />
                 )}
-                {gameType === 'multi' && !gameOver && <div className="player-turn">Player {playerTurn}'s Turn</div>}
+                {gameType === 'multi' && !gameOver && (
+                    <div 
+                        className={playerTurn === 1 ? "player-turn player1" : "player-turn"}
+                        style={playerTurn === 1 ? {color: "#1910a0"} : {}}
+                    >
+                        Player {playerTurn}'s Turn
+                    </div>
+                )}
                 {gameType === 'multi' && <MultiPlayerGame player1Score={player1Score} player2Score={player2Score} />}
             </div>
             <Cards 
@@ -189,23 +209,26 @@ const handleRestart = () => {
                 <div className="game-result-overlay">
                     <div className="result-text">Your Time: {finalTime} seconds</div>
                     <form onSubmit={handleScoreSubmit}>
-                        <input 
-                            type="text" 
-                            className="styled-input"
-                            placeholder="First Name" 
-                            value={firstName} 
-                            onChange={(e) => setFirstName(e.target.value)} 
-                            required 
-                        />
-                        <input 
-                            type="text" 
-                            className="styled-input"
-                            placeholder="Last Name" 
-                            value={lastName} 
-                            onChange={(e) => setLastName(e.target.value)} 
-                            required 
-                        />
-                        <button type="submit" disabled={isSubmitting}>
+                    <SafeInput 
+                      type="text" 
+                      placeholder="First Name" 
+                      value={firstName} 
+                      onValidChange={(inputValue) => {
+                        setFirstName(inputValue);
+                        setIsFirstNameInappropriate(containsBlacklistedWord(inputValue));
+                      }}
+                    />
+
+                    <SafeInput 
+                      type="text" 
+                      placeholder="Last Name" 
+                      value={lastName} 
+                      onValidChange={(inputValue) => {
+                        setLastName(inputValue);
+                        setIsLastNameInappropriate(containsBlacklistedWord(inputValue));
+                      }}
+                    />
+                        <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
                           {isSubmitting ? 'Submitting...' : 'Submit Score'}
                         </button>
                     </form>

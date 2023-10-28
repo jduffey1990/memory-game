@@ -140,6 +140,7 @@ button.secondary:hover {
   height: 80vh;
   background-color: #eee;
   border: 1px solid #333;
+  background-color: #1910a0;
 }
 
 .game-choice-overlay {
@@ -251,3 +252,8 @@ button.secondary:hover {
   border-radius: 5px;
   font-size: 20px;
 } 
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
