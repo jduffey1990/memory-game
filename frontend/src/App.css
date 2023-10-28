@@ -228,7 +228,7 @@ button.secondary:hover {
   top: 0;
   bottom: 0; /* This ensures it reaches the bottom */
   z-index: 50;
-  padding-top: 80px; /* Added this to move content down instead of using margin-top */
+  padding-top: 20px; /* Added this to move content down instead of using margin-top */
 }
 
 .result-text {
@@ -238,7 +238,7 @@ button.secondary:hover {
 /* ScoreBoard.css */
 
 .scoreboard {
-  margin-top: 200px;
+  margin-top: 100px;
 }
 
 .score-list {
@@ -249,4 +249,5 @@ button.secondary:hover {
 .score-item {
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: 20px;
 } 

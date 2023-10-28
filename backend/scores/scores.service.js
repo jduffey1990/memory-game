@@ -4,7 +4,7 @@ function read() {
     return knex("scores")   // "scores" table should be quoted.
       .select("*")
       .orderBy("score", "asc")
-      .limit(10);  // limit the results to the top 15 scores
+      .limit(15);  // limit the results to the top 15 scores
   }
 
 
