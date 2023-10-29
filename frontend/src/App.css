@@ -144,17 +144,19 @@ button.secondary:hover {
 }
 
 .game-choice-overlay {
+  text-align: center;
   display: flex;
   flex-direction: column;  /* Changed to column for better layout */
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.9);
   width: 60%;  /* Reduced to 60% to focus on game choice elements */
-  height: 60vh; /* Adjusted height */
   border: 1px solid #9FBFAD;
   border-radius: 15px;  /* Rounded corners */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);  /* Subtle shadow for depth */
   z-index: 5;
+  min-height: 80vh;  /* Adjusted from height to min-height */
+  padding: 2%;
 }
 
 
@@ -256,4 +258,23 @@ button.secondary:hover {
 .error-message {
   color: red;
   font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  h1 {
+     font-size: 2em;  /* Adjust font size for smaller screens */
+  }
+
+  h2 {
+     font-size: 20px; /* Adjust font size for smaller screens */
+  }
+
+  label, select, .styled-input, button {
+     font-size: 16px;  /* Adjust font size for smaller screens */
+  }
+
+  .game-choice-overlay {
+     width: 90%;  /* Increase width for smaller screens */
+     min-height: auto;  /* Let content dictate height */
+  }
 }

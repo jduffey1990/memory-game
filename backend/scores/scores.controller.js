@@ -27,6 +27,17 @@ function nameIsValid(req, _res, next) {
   next();
 }
 
+function validateInput(req, res, next) {
+  const { first_name, last_name } = req.body.data;
+  if (containsBlacklistedWord(first_name) || containsBlacklistedWord(last_name)) {
+      return next({
+          status: 400,
+          message: "Please avoid using inappropriate words.",
+      });
+  }
+  next();
+}
+
 
 async function create(req, res, next) {
   try {
@@ -53,6 +64,7 @@ module.exports = {
   create: [
     hasBodyData,
     nameIsValid,
+    validateInput,
     asyncErrorBoundary(create),
   ],
   list: asyncErrorBoundary(list),  // renamed from read to list for clarity

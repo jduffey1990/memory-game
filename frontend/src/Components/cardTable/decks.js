@@ -44,10 +44,38 @@ import jigglypuff from "../../images/jigglypuff.png";
 import snorlax from "../../images/snorlax.png";
 import pidgeot from "../../images/pidgeot.png";
 
+//baseball
+import dodgers from "../../images/dodgers.png";
+import rocks from "../../images/rocks.png";
+import pirates from "../../images/pirates.png";
+import giants from "../../images/giants.png";
+import bluejays from "../../images/bluejays.png";
+import rays from "../../images/rays.png";
+import yanks from "../../images/yanks.png";
+import royals from "../../images/royals.png";
+import dbacks from "../../images/dbacks.png";
+
+//Baby Animals
+import babyCat from "../../images/babyCat.png";
+import pup from "../../images/pup.png";
+import babyElephant from"../../images/babyElephant.png";
+import babyHedge from"../../images/babyHedge.png";
+import piglet from"../../images/piglet.png";
+import babyDeer from "../../images/babyDeer.png";
+import babyMonkey from "../../images/babyMonkey.png";
+import chicks from"../../images/chicks.png";
+import lambs from "../../images/lambs.png";
+
+
+
+
 export const DECKS = {
   "Black and White": [baseball, baseball, football, football, bike, bike, cat, cat, chicken, chicken, dog, dog, mountains, mountains, skis, skis, ballerina, ballerina],
   "Superheroes": [batman, batman, captMarvel, captMarvel, catWoman, catWoman, hulk, hulk, panther, panther, spiderman, spiderman, superman, superman, wonder, wonder, storm, storm],
   "Disney Princesses": [ariel, ariel, belle, belle, cinderella, cinderella, elsa, elsa, merida, merida, mulan, mulan, moana, moana, snowWhite, snowWhite, tiana, tiana],
   // ... any other decks you add
-  "Pokemon": [pikachu, pikachu, eviee, eviee, charizard, charizard, charmander, charmander, squirtle, squirtle, bulbasaur, bulbasaur, jigglypuff, jigglypuff, snorlax, snorlax, pidgeot, pidgeot]
+  "Pokemon": [pikachu, pikachu, eviee, eviee, charizard, charizard, charmander, charmander, squirtle, squirtle, bulbasaur, bulbasaur, jigglypuff, jigglypuff, snorlax, snorlax, pidgeot, pidgeot],
+
+  "Baseball Teams": [dodgers, dodgers, rocks, rocks, pirates, pirates, giants, giants, bluejays, bluejays, rays, rays, yanks, yanks, royals, royals, dbacks, dbacks],
+  "Baby Animals": [babyCat, babyCat, babyDeer, babyDeer, babyElephant, babyElephant, babyHedge, babyHedge, piglet, piglet, pup, pup, babyMonkey, babyMonkey, chicks, chicks, lambs, lambs]
 };

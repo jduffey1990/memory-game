@@ -155,8 +155,12 @@ const handleRestart = () => {
                     ))}
                 </select>
             </div>
-          <button onClick={() => handleGameTypeSelection('single', selectedDeck)}>Start 1 Player Game</button>
-          <button className="button secondary" onClick={() => handleGameTypeSelection('multi', selectedDeck)}>Start 2 Player Game</button>
+            <div>
+                <h2>In a one player game, race against the clock to see if you can get a high score</h2>
+                <button onClick={() => handleGameTypeSelection('single', selectedDeck)}>Start 1 Player Game</button>
+                <h2>In a two player game, beat your friends and family head-to-head</h2>
+                <button className="button secondary" onClick={() => handleGameTypeSelection('multi', selectedDeck)}>Start 2 Player Game</button>
+            </div>
         </div>
       )}
 
