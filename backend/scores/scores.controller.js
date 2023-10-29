@@ -1,5 +1,6 @@
 const service = require("./scores.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const { containsBlacklistedWord } = require("./blacklist");
 
 // checks if body contains data
 function hasBodyData(req, _res, next) {
