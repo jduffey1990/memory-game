@@ -7,7 +7,7 @@ import { DECKS } from './Components/cardTable/decks';
 import Timer from './Components/Timer/timer';
 import MultiPlayerGame from './Components/MultiPlayerGame';
 import ScoreBoard from './Components/topScore';
-import SafeInput, {containsBlacklistedWord} from './Components/safeInput';
+import SafeInput from './Components/safeInput';
 
 import { createScore } from './api'
 import { listScores } from './api';
@@ -209,35 +209,35 @@ const handleRestart = () => {
             )}
 
             
-            {gameOver && gameType === 'single' && !showScores && (
-                <div className="game-result-overlay">
-                    <div className="result-text">Your Time: {finalTime} seconds</div>
-                    <form onSubmit={handleScoreSubmit}>
-                    <SafeInput 
-                      type="text" 
-                      placeholder="First Name" 
-                      value={firstName} 
-                      onValidChange={(inputValue) => {
-                        setFirstName(inputValue);
-                        setIsFirstNameInappropriate(containsBlacklistedWord(inputValue));
-                      }}
-                    />
+              {gameOver && gameType === 'single' && !showScores && (
+                  <div className="game-result-overlay">
+                      <div className="result-text">Your Time: {finalTime} seconds</div>
+                      <form onSubmit={handleScoreSubmit}>
+                      <SafeInput 
+                          type="text" 
+                          placeholder="First Name" 
+                          value={firstName} 
+                          onInappropriatenessChange={(isInvalid) => {
+                              setIsFirstNameInappropriate(isInvalid);
+                          }}
+                          onChange={handleFirstNameChange} // Pass the function here
+                      />
 
-                    <SafeInput 
-                      type="text" 
-                      placeholder="Last Name" 
-                      value={lastName} 
-                      onValidChange={(inputValue) => {
-                        setLastName(inputValue);
-                        setIsLastNameInappropriate(containsBlacklistedWord(inputValue));
-                      }}
-                    />
-                        <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
-                          {isSubmitting ? 'Submitting...' : 'Submit Score'}
-                        </button>
-                    </form>
-                </div>
-            )}
+                      <SafeInput 
+                          type="text" 
+                          placeholder="Last Name" 
+                          value={lastName} 
+                          onInappropriatenessChange={(isInvalid) => {
+                              setIsLastNameInappropriate(isInvalid);
+                          }}
+                          onChange={handleLastNameChange} // Pass the function here
+                      />
+                          <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
+                              {isSubmitting ? 'Submitting...' : 'Submit Score'}
+                          </button>
+                      </form>
+                  </div>
+              )}
 
             {showScores && (
                         <div className="game-result-overlay">

@@ -454,38 +454,50 @@ const BadWordsList = {
     xxx:1
     };
 
-export const containsBlacklistedWord = (input) => {
-    const words = input.split(" "); // Split input by spaces to get individual words
-    for (let word of words) {
-        if (BadWordsList[word.toLowerCase()]) {
-            return true;
+    export const containsBlacklistedWord = (input) => {
+        const words = input.split(" "); // Split input by spaces to get individual words
+        for (let word of words) {
+            if (BadWordsList[word.toLowerCase()]) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
-
-const SafeInput = ({ placeholder, value, onValidChange, type="text" }) => {
-    const [isInappropriateWordEntered, setIsInappropriateWordEntered] = useState(false);
-
-    const handleInputChange = (e) => {
-        const inputValue = e.target.value;
-        setIsInappropriateWordEntered(containsBlacklistedWord(inputValue));
-        onValidChange(inputValue); // Send the inputValue, not the entire event
+    
+    const SafeInput = ({
+        placeholder, 
+        value, 
+        onInappropriatenessChange, 
+        onChange, // New prop
+        type="text"
+      }) => {
+          const [isInappropriateWordEntered, setIsInappropriateWordEntered] = useState(false);
+      
+          const handleInputChange = (e) => {
+              const inputValue = e.target.value;
+              const isInvalid = containsBlacklistedWord(inputValue);
+              setIsInappropriateWordEntered(isInvalid);
+      
+              // Inform the parent component about the inappropriateness status
+              onInappropriatenessChange(isInvalid);
+              
+              // Invoke the onChange prop
+              onChange(inputValue); // Update the parent's state for firstName or lastName
+          };
+    
+        return (
+            <div>
+                <input 
+                    type={type} 
+                    className={`styled-input ${isInappropriateWordEntered ? 'error' : ''}`} 
+                    placeholder={placeholder} 
+                    value={value} 
+                    onChange={handleInputChange}
+                    required 
+                />
+                {isInappropriateWordEntered && <span className="error-message">Please avoid inappropriate words.</span>}
+            </div>
+        );
     };
-
-    return (
-        <div>
-            <input 
-                type={type} 
-                className={`styled-input ${isInappropriateWordEntered ? 'error' : ''}`} 
-                placeholder={placeholder} 
-                value={value} 
-                onChange={handleInputChange}
-                required 
-            />
-            {isInappropriateWordEntered && <span className="error-message">Please avoid inappropriate words.</span>}
-        </div>
-    );
-};
-
-export default SafeInput;
+    
+    export default SafeInput;
