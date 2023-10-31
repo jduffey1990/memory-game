@@ -8,6 +8,7 @@ import Timer from './Components/Timer/timer';
 import MultiPlayerGame from './Components/MultiPlayerGame';
 import ScoreBoard from './Components/topScore';
 import SafeInput from './Components/safeInput';
+import { BeatLoader } from 'react-spinners';
 
 import { createScore } from './api'
 import { listScores } from './api';
@@ -34,6 +35,8 @@ function App() {
   const [isFirstNameInappropriate, setIsFirstNameInappropriate] = useState(false);
 const [isLastNameInappropriate, setIsLastNameInappropriate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessageIndex, setStatusMessageIndex] = useState(0);
+const statusMessages = ["Submitting...", "Saving your score...", "Almost there..."];
 
   //once we have retrieved the top scores from the DB
   const [topScores, setTopScores] = useState([]);
@@ -87,6 +90,16 @@ const [isLastNameInappropriate, setIsLastNameInappropriate] = useState(false);
         setGameOver(true);
     }
 }, [matchedPairs]);
+
+useEffect(() => {
+  if (isSubmitting) {
+      const interval = setInterval(() => {
+          setStatusMessageIndex((prevIndex) => (prevIndex + 1) % statusMessages.length);
+      }, 3000);
+
+      return () => clearInterval(interval);
+  }
+}, [isSubmitting]);
 
   const handleFirstNameChange = (newVal) => {
     setFirstName(newVal);
@@ -209,35 +222,41 @@ const handleRestart = () => {
             )}
 
             
-              {gameOver && gameType === 'single' && !showScores && (
-                  <div className="game-result-overlay">
-                      <div className="result-text">Your Time: {finalTime} seconds</div>
-                      <form onSubmit={handleScoreSubmit}>
-                      <SafeInput 
-                          type="text" 
-                          placeholder="First Name" 
-                          value={firstName} 
-                          onInappropriatenessChange={(isInvalid) => {
-                              setIsFirstNameInappropriate(isInvalid);
-                          }}
-                          onChange={handleFirstNameChange} // Pass the function here
-                      />
-
-                      <SafeInput 
-                          type="text" 
-                          placeholder="Last Name" 
-                          value={lastName} 
-                          onInappropriatenessChange={(isInvalid) => {
-                              setIsLastNameInappropriate(isInvalid);
-                          }}
-                          onChange={handleLastNameChange} // Pass the function here
-                      />
-                          <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
-                              {isSubmitting ? 'Submitting...' : 'Submit Score'}
-                          </button>
-                      </form>
-                  </div>
-              )}
+              {
+                  gameOver && gameType === 'single' && !showScores && (
+                      <div className="game-result-overlay">
+                          <div className="result-text">Your Time: {finalTime} seconds</div>
+                          <form onSubmit={handleScoreSubmit}>
+                              <SafeInput 
+                                  type="text" 
+                                  placeholder="First Name" 
+                                  value={firstName} 
+                                  onInappropriatenessChange={(isInvalid) => {
+                                      setIsFirstNameInappropriate(isInvalid);
+                                  }}
+                                  onChange={handleFirstNameChange} // Pass the function here
+                              />
+                              <SafeInput 
+                                  type="text" 
+                                  placeholder="Last Name" 
+                                  value={lastName} 
+                                  onInappropriatenessChange={(isInvalid) => {
+                                      setIsLastNameInappropriate(isInvalid);
+                                  }}
+                                  onChange={handleLastNameChange} // Pass the function here
+                              />
+                              <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
+                                  {isSubmitting ? (
+                                      <>
+                                          <BeatLoader size={10} color="#123abc" loading={isSubmitting} /> 
+                                          {statusMessages[statusMessageIndex]}
+                                      </>
+                                  ) : 'Submit Score'}
+                              </button>
+                          </form>
+                      </div>
+                  )
+              }
 
             {showScores && (
                         <div className="game-result-overlay">
