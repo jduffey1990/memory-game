@@ -1,4 +1,6 @@
 # Jordan's Memory Game
+#### Video Demo:  <URL HERE>
+#### Description:
 
 Welcome to Jordan's Memory Game! This is an interactive game site where you can challenge yourself or compete against a friend in a test of memory and speed.
 
