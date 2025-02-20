@@ -30,3 +30,10 @@ Ready to play? Head over to [Jordan's Memory Game](https://jordans-memory-game.o
 ## Feedback and Contributions
 
 We'd love to hear from you! If you have suggestions, feedback, or would like to contribute, feel free to [open an issue](https://github.com/jduffey1990/memory-game/issues) or submit a pull request.
+
+
+## **Hosting**
+### **DB:**
+- Neon logged in with github
+### **Site Servin:**
+- Render logged in with git hub
