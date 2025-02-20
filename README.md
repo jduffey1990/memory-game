@@ -32,7 +32,7 @@ Ready to play? Head over to [Jordan's Memory Game](https://jordans-memory-game.o
 We'd love to hear from you! If you have suggestions, feedback, or would like to contribute, feel free to [open an issue](https://github.com/jduffey1990/memory-game/issues) or submit a pull request.
 
 
-### Render spins down the back end after 15 minutes of the app not being used for these freee instances.  If you use the search function it should jog the back end and spin up after a brief period.
+### Render spins down the back end after 15 minutes of the app not being used for these free instances.  If you use the search function it should jog the back end and spin up after a brief period.
 ![Screenshot 2023-10-17 093955](https://github.com/jduffey1990/restaurant-reservation/assets/122471477/bd80f67b-34d1-49a6-8ea8-8a6b3e300557)
 
 
