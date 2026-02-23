@@ -228,16 +228,12 @@ function App() {
                   }}
                 />
               )}
-              {gameType === 'multi' && !gameOver && (
-                <div 
-                  className={playerTurn === 1 ? "player-turn player1" : "player-turn"}
-                  style={playerTurn === 1 ? {color: "#1910a0"} : {}}
-                >
-                  Player {playerTurn}'s Turn
-                </div>
-              )}
               {gameType === 'multi' && (
-                <MultiPlayerGame player1Score={player1Score} player2Score={player2Score} />
+                  <MultiPlayerGame 
+                      player1Score={player1Score} 
+                      player2Score={player2Score}
+                      playerTurn={playerTurn}
+                  />
               )}
             </div>
 
