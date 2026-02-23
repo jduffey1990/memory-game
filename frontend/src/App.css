@@ -369,7 +369,7 @@ button.secondary:hover:not(:disabled) {
   font-weight: 700;
   color: var(--coral-light);
   text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  background-color: rgba(87, 6, 6, 0.5);
+  background-color: rgb(0, 0, 0);
 }
 
 /* ============================================================
