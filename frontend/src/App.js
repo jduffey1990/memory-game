@@ -33,16 +33,47 @@ function App() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isFirstNameInappropriate, setIsFirstNameInappropriate] = useState(false);
-const [isLastNameInappropriate, setIsLastNameInappropriate] = useState(false);
+  const [isLastNameInappropriate, setIsLastNameInappropriate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessageIndex, setStatusMessageIndex] = useState(0);
-const statusMessages = ["Submitting...", "Saving your score...", "Almost there..."];
+  const statusMessages = ["Submitting...", "Saving your score...", "Almost there..."];
 
   //once we have retrieved the top scores from the DB
   const [topScores, setTopScores] = useState([]);
-  const [showScores, setShowScores] = useState(false)
+  const [showScores, setShowScores] = useState(false);
 
-  
+  // backend readiness
+  const [backendReady, setBackendReady] = useState(false);
+  const [backendWaking, setBackendWaking] = useState(true);
+
+  // Poll the backend on mount until it responds or we give up (~75 seconds)
+  useEffect(() => {
+    let attempts = 0;
+    const maxAttempts = 15;
+    let timeoutId = null;
+
+    const tryPing = async () => {
+      try {
+        await pingBackend();
+        setBackendReady(true);
+        setBackendWaking(false);
+      } catch (error) {
+        attempts++;
+        if (attempts < maxAttempts) {
+          timeoutId = setTimeout(tryPing, 5000);
+        } else {
+          // Give up after ~75 seconds; let the user try submitting and surface the error naturally
+          setBackendWaking(false);
+        }
+      }
+    };
+
+    tryPing();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleGameTypeSelection = (type, deck) => {
     setGameType(type);
@@ -50,7 +81,7 @@ const statusMessages = ["Submitting...", "Saving your score...", "Almost there..
 
     if (type === 'single') {
       setIsTimerRunning(true);
-  }
+    }
   }
 
   const handleCardMatch = (isMatched) => {
@@ -71,35 +102,22 @@ const statusMessages = ["Submitting...", "Saving your score...", "Almost there..
     }
   }
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await pingBackend();
-      } catch (error) {
-        console.error('Failed to ping backend:', error);
-      }
-    })();
-  }, []);
-
   //endgame effect
   useEffect(() => {
     if (matchedPairs.length === 18) {
         setIsTimerRunning(false);
-        
-        // Set game over to true when all pairs are matched
         setGameOver(true);
     }
-}, [matchedPairs]);
+  }, [matchedPairs]);
 
-useEffect(() => {
-  if (isSubmitting) {
+  useEffect(() => {
+    if (isSubmitting) {
       const interval = setInterval(() => {
-          setStatusMessageIndex((prevIndex) => (prevIndex + 1) % statusMessages.length);
+        setStatusMessageIndex((prevIndex) => (prevIndex + 1) % statusMessages.length);
       }, 3000);
-
       return () => clearInterval(interval);
-  }
-}, [isSubmitting]);
+    }
+  }, [isSubmitting]);
 
   const handleFirstNameChange = (newVal) => {
     setFirstName(newVal);
@@ -109,43 +127,37 @@ useEffect(() => {
     setLastName(newVal);
   };
 
-const handleScoreSubmit = async (e) => {
-  e.preventDefault();
+  const handleScoreSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  setIsSubmitting(true);
+    try {
+      const scoreData = {
+        first_name: firstName,
+        last_name: lastName,
+        score: finalTime
+      };
 
-  try {
-    // Create a score object from your state values
-    const scoreData = {
-      first_name: firstName,
-      last_name: lastName,
-      score: finalTime
-    };
+      const response = await createScore(scoreData);
 
-    // Use the createScore function to send data to your backend
-    const response = await createScore(scoreData);
-
-    if (response) {
-      const scores = await listScores();
-      setTopScores(scores);
-      setShowScores(true);  // Show the scores view
-      setIsSubmitting(false);
-    } else {
-      // Handle failure: show a user-friendly error message
-      console.error("Failed to submit score.");
+      if (response) {
+        const scores = await listScores();
+        setTopScores(scores);
+        setShowScores(true);
+        setIsSubmitting(false);
+      } else {
+        console.error("Failed to submit score.");
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
       setIsSubmitting(false);
     }
+  };
 
-  } catch (error) {
-    // Handle error: show a user-friendly error message
-    console.error("An error occurred:", error);
-    setIsSubmitting(false);
-  }
-};
-
-const handleRestart = () => {
-  window.location.reload();
-};
+  const handleRestart = () => {
+    window.location.reload();
+  };
 
   return (
     <div className="App">
@@ -153,127 +165,158 @@ const handleRestart = () => {
 
       {gameType === null && (
         <div className="game-choice-overlay">
-          <div>
-                <h2>For best results, play on desktop, laptop, or tablet</h2>
-                </div>
-                
-          <h2>Choose Game Mode:</h2>
-          <div style={{margin: "20px 0"}}>
-                <label>Select a deck: </label>
-                <select value={selectedDeck} onChange={e => setSelectedDeck(e.target.value)}>
-                    {Object.keys(DECKS).map(deckKey => (
-                        <option key={deckKey} value={deckKey}>
-                            {deckKey.replace('_', ' ')}
-                        </option>
-                    ))}
-                </select>
+          <div className="overlay-header">
+            <h2>For best results, play on desktop, laptop, or tablet</h2>
+          </div>
+
+          <div className="deck-selector">
+            <label>Select a deck: </label>
+            <select value={selectedDeck} onChange={e => setSelectedDeck(e.target.value)}>
+              {Object.keys(DECKS).map(deckKey => (
+                <option key={deckKey} value={deckKey}>
+                  {deckKey.replace('_', ' ')}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mode-section">
+            <div className="mode-card">
+              <h2>1 Player</h2>
+              <p>Race against the clock and climb the leaderboard!</p>
+              <button onClick={() => handleGameTypeSelection('single', selectedDeck)}>
+                Start Solo Game
+              </button>
             </div>
-            <div>
-                <h2>In a one player game, race against the clock to see if you can get a high score</h2>
-                <button onClick={() => handleGameTypeSelection('single', selectedDeck)}>Start 1 Player Game</button>
-                <h2>In a two player game, beat your friends and family head-to-head</h2>
-                <button className="button secondary" onClick={() => handleGameTypeSelection('multi', selectedDeck)}>Start 2 Player Game</button>
+            <div className="mode-divider">VS</div>
+            <div className="mode-card">
+              <h2>2 Players</h2>
+              <p>Challenge a friend head-to-head for most matches!</p>
+              <button className="button secondary" onClick={() => handleGameTypeSelection('multi', selectedDeck)}>
+                Start 2 Player Game
+              </button>
             </div>
+          </div>
+
+          {/* Subtle server status — only visible while waking up */}
+          {backendWaking && !backendReady && (
+            <div className="server-status">
+              <BeatLoader size={6} color="#9FBFAD" loading={true} />
+              <span>Warming up the server&hellip;</span>
+            </div>
+          )}
+          {backendReady && (
+            <div className="server-status server-ready">
+              <span>&#10003; Server ready</span>
+            </div>
+          )}
         </div>
       )}
 
-    {gameType && (
-      <div className="game-container">
-        <div className="board" style={{ backgroundImage: `url(${felt})` }}>
+      {gameType && (
+        <div className="game-container">
+          <div className="board" style={{ backgroundImage: `url(${felt})` }}>
             <div className="game-info">
-                {gameType === 'single' && (
+              {gameType === 'single' && (
                 <Timer
                   isRunning={isTimerRunning}
                   matchedPairs={matchedPairs.length / 2}  
                   onStart={() => setIsTimerRunning(true)}
                   onStop={(time) => {
-                      setIsTimerRunning(false);
-                      setFinalTime(time);
-                  
-                    }}
-                    />
-                )}
-                {gameType === 'multi' && !gameOver && (
-                    <div 
-                        className={playerTurn === 1 ? "player-turn player1" : "player-turn"}
-                        style={playerTurn === 1 ? {color: "#1910a0"} : {}}
-                    >
-                        Player {playerTurn}'s Turn
-                    </div>
-                )}
-                {gameType === 'multi' && <MultiPlayerGame player1Score={player1Score} player2Score={player2Score} />}
+                    setIsTimerRunning(false);
+                    setFinalTime(time);
+                  }}
+                />
+              )}
+              {gameType === 'multi' && !gameOver && (
+                <div 
+                  className={playerTurn === 1 ? "player-turn player1" : "player-turn"}
+                  style={playerTurn === 1 ? {color: "#1910a0"} : {}}
+                >
+                  Player {playerTurn}'s Turn
+                </div>
+              )}
+              {gameType === 'multi' && (
+                <MultiPlayerGame player1Score={player1Score} player2Score={player2Score} />
+              )}
             </div>
+
             <Cards 
-                deck={DECKS[selectedDeck]} 
-                setMatchedPairs={setMatchedPairs} 
-                matchedPairs={matchedPairs}
-                onCardMatch={handleCardMatch}
+              deck={DECKS[selectedDeck]} 
+              setMatchedPairs={setMatchedPairs} 
+              matchedPairs={matchedPairs}
+              onCardMatch={handleCardMatch}
             />
 
-            
             {gameOver && gameType === 'multi' && (
-                <div className="game-result-overlay">
-                    <div className="result-text">
-                        {player1Score === player2Score ? "It's a Tie!" :
-                        player1Score > player2Score ? "Congrats Player 1!" : "Congrats Player 2!"}
-                    </div>
-                    <button className="button secondary" onClick={() => window.location.reload()}>Restart</button>
+              <div className="game-result-overlay">
+                <div className="result-text">
+                  {player1Score === player2Score ? "It's a Tie!" :
+                    player1Score > player2Score ? "Congrats Player 1!" : "Congrats Player 2!"}
                 </div>
+                <button className="button secondary" onClick={() => window.location.reload()}>
+                  Restart
+                </button>
+              </div>
             )}
 
-            
-              {
-                  gameOver && gameType === 'single' && !showScores && (
-                      <div className="game-result-overlay">
-                          <div className="result-text">Your Time: {finalTime} seconds</div>
-                          <form onSubmit={handleScoreSubmit}>
-                              <SafeInput 
-                                  type="text" 
-                                  placeholder="First Name" 
-                                  value={firstName} 
-                                  onInappropriatenessChange={(isInvalid) => {
-                                      setIsFirstNameInappropriate(isInvalid);
-                                  }}
-                                  onChange={handleFirstNameChange} // Pass the function here
-                              />
-                              <SafeInput 
-                                  type="text" 
-                                  placeholder="Last Name" 
-                                  value={lastName} 
-                                  onInappropriatenessChange={(isInvalid) => {
-                                      setIsLastNameInappropriate(isInvalid);
-                                  }}
-                                  onChange={handleLastNameChange} // Pass the function here
-                              />
-                              <button type="submit" disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}>
-                                  {isSubmitting ? (
-                                      <>
-                                          <BeatLoader size={10} color="#123abc" loading={isSubmitting} /> 
-                                          {statusMessages[statusMessageIndex]}
-                                      </>
-                                  ) : 'Submit Score'}
-                              </button>
-                          </form>
-                      </div>
-                  )
-              }
+            {gameOver && gameType === 'single' && !showScores && (
+              <div className="game-result-overlay">
+                <div className="result-text">
+                  <span className="time-label">Your Time</span>
+                  <span className="time-value">{finalTime}s</span>
+                </div>
+
+                {/* Gate the form behind backend readiness */}
+                {!backendReady ? (
+                  <div className="server-waking-message">
+                    <BeatLoader size={10} color="#FF8A8A" loading={true} />
+                    <p>Server is warming up — score submission will be ready shortly!</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleScoreSubmit} className="score-form">
+                    <SafeInput 
+                      type="text" 
+                      placeholder="First Name" 
+                      value={firstName} 
+                      onInappropriatenessChange={(isInvalid) => setIsFirstNameInappropriate(isInvalid)}
+                      onChange={handleFirstNameChange}
+                    />
+                    <SafeInput 
+                      type="text" 
+                      placeholder="Last Name" 
+                      value={lastName} 
+                      onInappropriatenessChange={(isInvalid) => setIsLastNameInappropriate(isInvalid)}
+                      onChange={handleLastNameChange}
+                    />
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || isFirstNameInappropriate || isLastNameInappropriate}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <BeatLoader size={10} color="#fff" loading={isSubmitting} />
+                          {statusMessages[statusMessageIndex]}
+                        </>
+                      ) : 'Submit Score'}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
 
             {showScores && (
-                        <div className="game-result-overlay">
-                            <h1>Top Scores!</h1>
-                            <ScoreBoard scores={topScores} />
-                            <button className ='button secondary' onClick={handleRestart}>Restart</button>
-                        </div>
+              <div className="game-result-overlay">
+                <h1>Top Scores!</h1>
+                <ScoreBoard scores={topScores} />
+                <button className='button secondary' onClick={handleRestart}>Play Again</button>
+              </div>
             )}
-                
-              ;
           </div>
         </div>
-    )}
-
+      )}
     </div>
-);
-            }
-
+  );
+}
 
 export default App;
