@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import { useState } from 'react';
 import Card from './card';
 
 function shuffleArray(array) {
@@ -10,7 +10,7 @@ function shuffleArray(array) {
 }
 
 
-function Cards({ deck, matchedPairs, setMatchedPairs, onCardMatch }) {
+function Cards({ deck, matchedPairs, setMatchedPairs, onCardMatch, deckName }) {
 
     const [shuffledCards, setShuffledCards] = useState(() => shuffleArray([...deck]));
     const [flippedCards, setFlippedCards] = useState([]);
@@ -44,19 +44,18 @@ function Cards({ deck, matchedPairs, setMatchedPairs, onCardMatch }) {
                     // Reset the flipped cards
                     setFlippedCards([]);
                     onCardMatch(false)
-                }, 2000);  // Reduced to 1 second for better user experience
+                }, 2000);
             }
         }
     }
-
-
 
     return (
         <div className="cards-container">
             {shuffledCards.map((img, index) => (
                 <Card 
                     key={index}
-                    front={img} 
+                    front={img}
+                    deckName={deckName}
                     // A card is flipped if it's in flippedCards or matchedCards arrays
                     isFlipped={flippedCards.includes(index) || matchedPairs.includes(index)}
                     onFlip={() => handleCardFlip(index)}

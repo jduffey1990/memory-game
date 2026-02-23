@@ -246,6 +246,7 @@ function App() {
               setMatchedPairs={setMatchedPairs} 
               matchedPairs={matchedPairs}
               onCardMatch={handleCardMatch}
+              deckName={selectedDeck} 
             />
 
             {gameOver && gameType === 'multi' && (
